@@ -1,0 +1,30 @@
+name: Publish Maven packages
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+      - name: Verify tag matches project version
+        if: github.ref_type == 'tag'
+        shell: bash
+        run: test "${GITHUB_REF_NAME}" = "v$(grep '^version=' gradle.properties | cut -d= -f2)"
+      - name: Test and publish
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew clean check publish
