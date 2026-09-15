@@ -1,7 +1,7 @@
 # Systand CMS
 
 Systand CMS is the private, shared CMS product line used by customer tenants and
-Xuntan internal websites. Version `0.1.1` is the first extraction milestone: it
+Xuntan internal websites. Version `0.1.2` is the current extraction milestone: it
 contains stable host integration contracts, tenant and actor abstractions, page
 publication rules, section definition rules, a Spring Boot starter, and a BOM.
 
@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    implementation(platform("com.systand.cms:cms-bom:0.1.1"))
+    implementation(platform("com.systand.cms:cms-bom:0.1.2"))
     implementation("com.systand.cms:cms-spring-boot-starter")
 }
 ```
@@ -79,7 +79,9 @@ systand:
       mode: custom
 ```
 
-Startup fails when CMS is enabled but no valid tenant provider is available.
+Startup fails when CMS is enabled but no unique tenant provider is available.
+For custom mode, the provider is resolved only when CMS work is executed, so it
+may safely read request-bound authentication context.
 
 ## Build and local verification
 
@@ -88,7 +90,7 @@ Startup fails when CMS is enabled but no valid tenant provider is available.
 ```
 
 Release artifacts are published by the `Publish Maven packages` workflow. A tag
-must match the Gradle version, for example `v0.1.1`.
+must match the Gradle version, for example `v0.1.2`.
 
 ## Compatibility
 

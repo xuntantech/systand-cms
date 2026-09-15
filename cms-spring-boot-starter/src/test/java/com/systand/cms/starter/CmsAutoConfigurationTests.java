@@ -49,10 +49,11 @@ class CmsAutoConfigurationTests {
 
     @Test
     void acceptsHostProvidedTenantProvider() {
-        UUID tenantId = UUID.fromString("b06ee121-a3b3-4f1a-87ba-0252c4a71bd7");
         CmsProperties properties = new CmsProperties();
 
-        validate(properties, () -> tenantId);
+        validate(properties, () -> {
+            throw new IllegalStateException("No request-bound tenant is available during startup");
+        });
     }
 
     private void validate(CmsProperties properties, CmsTenantProvider provider) {

@@ -42,9 +42,6 @@ public class CmsAutoConfiguration {
                 throw new IllegalStateException(
                         "CMS requires exactly one CmsTenantProvider; configure FIXED mode or provide a custom bean");
             }
-            if (provider.requireTenantId() == null) {
-                throw new IllegalStateException("CmsTenantProvider must not return null");
-            }
             if (properties.getTenant().getMode() == CmsTenantMode.FIXED
                     && !(provider instanceof FixedCmsTenantProvider)) {
                 throw new IllegalStateException(

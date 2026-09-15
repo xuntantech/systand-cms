@@ -1,5 +1,4 @@
 import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
 
 plugins {
     base
