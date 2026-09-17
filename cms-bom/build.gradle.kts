@@ -11,6 +11,9 @@ dependencies {
     constraints {
         api(project(":cms-api"))
         api(project(":cms-core"))
+        api(project(":cms-persistence-mybatis"))
+        api(project(":cms-application"))
+        api(project(":cms-webmvc"))
         api(project(":cms-spring-boot-starter"))
     }
 }

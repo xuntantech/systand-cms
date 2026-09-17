@@ -9,10 +9,10 @@ public record CmsActor(UUID userId, CmsActorType type, String systemIdentifier) 
     public CmsActor {
         Objects.requireNonNull(type, "type");
         systemIdentifier = normalize(systemIdentifier);
-        if (type == CmsActorType.HUMAN && userId == null) {
-            throw new IllegalArgumentException("A HUMAN actor requires a userId");
+        if ((type == CmsActorType.PLATFORM_USER || type == CmsActorType.TENANT_USER) && userId == null) {
+            throw new IllegalArgumentException("A human actor requires a userId");
         }
-        if (type != CmsActorType.HUMAN && userId != null) {
+        if (type != CmsActorType.PLATFORM_USER && type != CmsActorType.TENANT_USER && userId != null) {
             throw new IllegalArgumentException("SYSTEM and ANONYMOUS actors must not use a fabricated userId");
         }
         if (type == CmsActorType.SYSTEM && systemIdentifier == null) {
@@ -24,7 +24,24 @@ public record CmsActor(UUID userId, CmsActorType type, String systemIdentifier) 
     }
 
     public static CmsActor human(UUID userId) {
-        return new CmsActor(Objects.requireNonNull(userId, "userId"), CmsActorType.HUMAN, null);
+        return tenantUser(userId);
+    }
+
+    public static CmsActor tenantUser(UUID userId) {
+        return new CmsActor(Objects.requireNonNull(userId, "userId"), CmsActorType.TENANT_USER, null);
+    }
+
+    public static CmsActor platformUser(UUID userId) {
+        return new CmsActor(Objects.requireNonNull(userId, "userId"), CmsActorType.PLATFORM_USER, null);
+    }
+
+    public String auditType() {
+        return switch (type) {
+            case PLATFORM_USER -> "platform_user";
+            case TENANT_USER -> "tenant_user";
+            case SYSTEM -> "system";
+            case ANONYMOUS -> "anonymous";
+        };
     }
 
     public static CmsActor system(String systemIdentifier) {

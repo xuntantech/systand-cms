@@ -7,7 +7,7 @@ import java.util.UUID;
 /** Host integration port for media lookup and binding. */
 public interface CmsMediaPort {
 
-    CmsMediaFile requireFile(UUID tenantId, UUID fileId);
+    CmsMediaFile requireFile(UUID tenantId, UUID siteId, UUID fileId);
 
     List<CmsMediaBinding> findBindings(
             UUID tenantId, String resourceType, UUID resourceId, String role);
@@ -22,5 +22,8 @@ public interface CmsMediaPort {
             boolean primary,
             Map<String, Object> metadata);
 
-    void unbind(UUID tenantId, UUID resourceId, UUID bindingId, long lockVersion);
+    void unbind(UUID tenantId, String resourceType, UUID resourceId, UUID bindingId, long lockVersion);
+
+    /** Remove media links when a CMS resource is deleted. */
+    void deleteResourceBindings(UUID tenantId, String resourceType, UUID resourceId);
 }

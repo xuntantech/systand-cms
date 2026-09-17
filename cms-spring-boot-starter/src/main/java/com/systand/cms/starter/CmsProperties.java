@@ -9,6 +9,8 @@ import java.util.UUID;
 public class CmsProperties {
 
     private boolean enabled = true;
+    private boolean webEnabled = true;
+    private String apiPrefix = "/v1/cms";
     private final Tenant tenant = new Tenant();
 
     public boolean isEnabled() {
@@ -19,8 +21,28 @@ public class CmsProperties {
         this.enabled = enabled;
     }
 
+    public boolean isWebEnabled() {
+        return webEnabled;
+    }
+
+    public void setWebEnabled(boolean webEnabled) {
+        this.webEnabled = webEnabled;
+    }
+
     public Tenant getTenant() {
         return tenant;
+    }
+
+    public String getApiPrefix() {
+        return apiPrefix;
+    }
+
+    public void setApiPrefix(String apiPrefix) {
+        if (apiPrefix == null || !apiPrefix.matches("/[a-zA-Z0-9/_-]+")
+                || apiPrefix.endsWith("/") || apiPrefix.contains("//")) {
+            throw new IllegalArgumentException("systand.cms.api-prefix must be an absolute path without a trailing slash");
+        }
+        this.apiPrefix = apiPrefix;
     }
 
     public static class Tenant {

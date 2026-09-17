@@ -1,1 +1,3 @@
 com.systand.cms.starter.CmsAutoConfiguration
+com.systand.cms.starter.CmsFeatureAutoConfiguration
+com.systand.cms.starter.CmsWebAutoConfiguration
