@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.systand.cms:cms-spring-boot-starter:0.2.0")
+    implementation("com.systand.cms:cms-spring-boot-starter:0.3.0")
 }
 ```
 
@@ -52,7 +52,7 @@ starter dependency exposes the API, services, persistence and controllers
 transitively. The BOM is optional when using one explicitly versioned starter;
 use it when declaring several CMS artifacts directly.
 
-`0.2.0` currently builds from this checkout; it is **not** available
+`0.3.0` currently builds from this checkout; it is **not** available
 from GitHub Packages until the release workflow publishes it. The platform
 checkout uses a conditional Gradle composite build to consume the sibling CMS
 source locally. Other hosts should wait for a published coordinate or use a
@@ -111,6 +111,6 @@ available. CMS errors use `CMS_*` codes and a CMS-owned response envelope.
 ```
 
 The GitHub Actions publish workflow runs on a version-matching tag or manual
-dispatch. Run the checks, then tag the same version (`v0.2.0`).
+dispatch. Run the checks, then tag the same version (`v0.3.0`).
 Do not push a tag before checking the database prerequisite for the target
 deployment. No package is published merely by editing this repository.
