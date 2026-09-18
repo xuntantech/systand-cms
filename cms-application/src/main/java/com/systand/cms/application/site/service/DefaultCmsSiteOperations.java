@@ -2,6 +2,9 @@ package com.systand.cms.application.site.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.systand.cms.api.actor.CmsActorProvider;
+import com.systand.cms.api.site.CmsCreateSiteCommand;
+import com.systand.cms.api.site.CmsSiteVO;
+import com.systand.cms.api.site.CmsSiteOperations;
 import com.systand.cms.api.tenant.CmsTenantProvider;
 import com.systand.cms.api.error.CmsErrorCode;
 import com.systand.cms.core.error.CmsException;
@@ -9,29 +12,30 @@ import com.systand.cms.persistence.mybatis.site.dataobject.SiteDO;
 import com.systand.cms.persistence.mybatis.site.mapper.SiteMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
-@Service
 @RequiredArgsConstructor
-public class SiteService {
+public class DefaultCmsSiteOperations implements CmsSiteOperations {
 	private final SiteMapper siteMapper;
 	private final CmsActorProvider actorProvider;
 	private final CmsTenantProvider tenantProvider;
+	private final CmsSiteVOMapper siteVOMapper;
 
 	/**
 	 * Get all sites by current tenant
 	 */
-	public List<SiteDO> getSitesByTenant() {
-		return siteMapper.selectList(new LambdaQueryWrapper<SiteDO>()
-				.eq(SiteDO::getTenantId, tenantProvider.requireTenantId()));
+	@Override
+	public List<CmsSiteVO> getSitesByTenant() {
+		return siteVOMapper.toVOs(siteMapper.selectList(new LambdaQueryWrapper<SiteDO>()
+				.eq(SiteDO::getTenantId, tenantProvider.requireTenantId())));
 	}
 
 	@Transactional
-	public SiteDO createSite(CreateSiteRequest request) {
+	@Override
+	public CmsSiteVO createSite(CmsCreateSiteCommand request) {
 		UUID actorId = actorProvider.requireActor().userId();
 		if (actorId == null) {
 			throw new CmsException(CmsErrorCode.INVALID_ARGUMENT,
@@ -56,8 +60,8 @@ public class SiteService {
 		} catch (DuplicateKeyException exception) {
 			throw new CmsException(CmsErrorCode.CONFLICT, "当前租户已存在相同站点编码");
 		}
-		return siteMapper.selectOne(new LambdaQueryWrapper<SiteDO>()
+		return siteVOMapper.toVO(siteMapper.selectOne(new LambdaQueryWrapper<SiteDO>()
 				.eq(SiteDO::getId, site.getId())
-				.eq(SiteDO::getTenantId, site.getTenantId()));
+				.eq(SiteDO::getTenantId, site.getTenantId())));
 	}
 }

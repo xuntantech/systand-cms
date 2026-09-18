@@ -2,6 +2,7 @@ package com.systand.cms.application.page.section.service;
 
 import com.systand.cms.api.error.CmsErrorCode;
 import com.systand.cms.core.error.CmsException;
+import com.systand.cms.core.section.PageSectionTypeDefinition;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;

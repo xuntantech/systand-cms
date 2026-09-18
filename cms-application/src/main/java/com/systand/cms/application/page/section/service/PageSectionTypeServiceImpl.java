@@ -2,10 +2,12 @@ package com.systand.cms.application.page.section.service;
 
 import com.systand.cms.api.error.CmsErrorCode;
 import com.systand.cms.core.error.CmsException;
+import com.systand.cms.core.section.PageSectionTypeDefinition;
 
 import com.systand.cms.api.tenant.CmsTenantProvider;
 import com.systand.cms.persistence.mybatis.page.section.dataobject.PageSectionTypeCatalogDO;
 import com.systand.cms.persistence.mybatis.page.section.mapper.PageSectionTypeMapper;
+import com.systand.cms.persistence.mybatis.page.section.mapper.PageSectionTypeDefinitionMapper;
 import com.systand.cms.application.page.section.vo.PageSectionTypeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class PageSectionTypeServiceImpl implements PageSectionTypeService {
 		UUID tenantId = requireTenantId();
 		initializeBuiltInsForTenant(tenantId);
 		return pageSectionTypeMapper.selectAvailableForTenant(tenantId, null, null).stream()
-				.map(PageSectionTypeDefinition::from)
+				.map(PageSectionTypeDefinitionMapper::from)
 				.map(PageSectionTypeVO::from)
 				.toList();
 	}
@@ -48,7 +50,7 @@ public class PageSectionTypeServiceImpl implements PageSectionTypeService {
 			throw badRequest("当前租户不可使用区块类型: "
 					+ normalizedCode + "@" + schemaVersion);
 		}
-		return PageSectionTypeDefinition.from(matches.getFirst());
+		return PageSectionTypeDefinitionMapper.from(matches.getFirst());
 	}
 
 	@Override

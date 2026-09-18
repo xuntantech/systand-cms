@@ -1,4 +1,4 @@
-package com.systand.cms.application.site.service;
+package com.systand.cms.web.site.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

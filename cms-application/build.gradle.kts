@@ -9,9 +9,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter:4.1.0")
     implementation("org.springframework.boot:spring-boot-starter-validation:4.1.0")
     implementation("org.springframework:spring-jdbc:7.0.5")
+    api("org.mapstruct:mapstruct:1.6.3")
 
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test:4.1.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.1")
 }

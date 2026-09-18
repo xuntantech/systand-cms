@@ -1,6 +1,6 @@
 package com.systand.cms.application.page.section.vo;
 
-import com.systand.cms.application.page.section.service.PageSectionTypeDefinition;
+import com.systand.cms.core.section.PageSectionTypeDefinition;
 import lombok.Builder;
 import lombok.Value;
 

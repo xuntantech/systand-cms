@@ -3,10 +3,13 @@ package com.systand.cms.application.site.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.systand.cms.api.actor.CmsActor;
 import com.systand.cms.api.actor.CmsActorProvider;
+import com.systand.cms.api.site.CmsCreateSiteCommand;
+import com.systand.cms.api.site.CmsSiteVO;
 import com.systand.cms.api.tenant.CmsTenantProvider;
 import com.systand.cms.persistence.mybatis.site.dataobject.SiteDO;
 import com.systand.cms.persistence.mybatis.site.mapper.SiteMapper;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,13 +21,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SiteServiceTests {
+class DefaultCmsSiteOperationsTests {
     @Test
     void createsSiteUsingTrustedTenantAndActor() {
         SiteMapper mapper = mock(SiteMapper.class);
         CmsActorProvider actors = mock(CmsActorProvider.class);
         CmsTenantProvider tenants = mock(CmsTenantProvider.class);
-        SiteService service = new SiteService(mapper, actors, tenants);
+        DefaultCmsSiteOperations service = new DefaultCmsSiteOperations(
+                mapper, actors, tenants, Mappers.getMapper(CmsSiteVOMapper.class));
 
         UUID tenantId = UUID.randomUUID();
         UUID actorId = UUID.randomUUID();
@@ -38,9 +42,9 @@ class SiteServiceTests {
             return 1;
         });
         when(mapper.selectOne(any(Wrapper.class))).thenAnswer(invocation -> insertedSite.get());
-        SiteDO result = service.createSite(new CreateSiteRequest("home", "Home", "zh-CN", List.of("zh-CN")));
-        assertEquals(tenantId, result.getTenantId());
-        assertEquals(actorId, result.getCreatedBy());
+        CmsSiteVO result = service.createSite(new CmsCreateSiteCommand("home", "Home", "zh-CN", List.of("zh-CN")));
+        assertEquals(tenantId, result.tenantId());
+        assertEquals(actorId, result.createdBy());
         verify(mapper).insert(any(SiteDO.class));
     }
 }

@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(project(":cms-api"))
+    api(project(":cms-core"))
     api("com.baomidou:mybatis-plus-core:3.5.17")
     implementation("tools.jackson.core:jackson-databind:3.1.4")
     compileOnly("org.projectlombok:lombok:1.18.38")

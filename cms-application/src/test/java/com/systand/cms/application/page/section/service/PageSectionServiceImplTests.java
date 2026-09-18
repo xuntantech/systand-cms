@@ -1,5 +1,7 @@
 package com.systand.cms.application.page.section.service;
 
+import com.systand.cms.core.section.PageSectionTypeDefinition;
+
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;

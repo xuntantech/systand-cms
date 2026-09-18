@@ -1,6 +1,6 @@
 package com.systand.cms.web.page.controller;
 
-import com.systand.cms.api.error.CmsErrorResponse;
+import com.systand.cms.web.error.CmsErrorResponse;
 import com.systand.cms.core.error.CmsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

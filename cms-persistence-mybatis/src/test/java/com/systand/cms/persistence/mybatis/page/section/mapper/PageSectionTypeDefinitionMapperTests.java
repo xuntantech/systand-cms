@@ -1,5 +1,6 @@
-package com.systand.cms.application.page.section.service;
+package com.systand.cms.persistence.mybatis.page.section.mapper;
 
+import com.systand.cms.core.section.PageSectionTypeDefinition;
 import com.systand.cms.persistence.mybatis.page.section.dataobject.PageSectionTypeCatalogDO;
 import org.junit.jupiter.api.Test;
 
@@ -9,22 +10,30 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class PageSectionTypeDefinitionTests {
+class PageSectionTypeDefinitionMapperTests {
 
 	@Test
 	void buildsMediaContractFromDatabaseJson() {
 		PageSectionTypeCatalogDO source = new PageSectionTypeCatalogDO();
 		source.setCode("hero");
+		source.setScope("BUILT_IN");
+		source.setLabel("顶部横幅");
+		source.setDefaultSectionKey("hero");
+		source.setRendererKey("hero");
+		source.setHandlerKey("HERO");
 		source.setSchemaVersion(1);
 		source.setDefaultSettings(Map.of("variant", "page_hero"));
 		source.setMediaSchema(Map.of(
 				"slots", List.of(Map.of(
 						"role", "BACKGROUND_IMAGE",
 						"accept", List.of("image/*"),
+						"maxCount", 1), Map.of(
+						"role", "BACKGROUND_VIDEO",
+						"accept", List.of("video/*"),
 						"maxCount", 1)),
 				"requiredAnyOf", List.of("BACKGROUND_IMAGE", "BACKGROUND_VIDEO")));
 
-		PageSectionTypeDefinition definition = PageSectionTypeDefinition.from(source);
+		PageSectionTypeDefinition definition = PageSectionTypeDefinitionMapper.from(source);
 
 		PageSectionTypeDefinition.MediaSlot slot = definition
 				.findMediaSlot("background_image").orElseThrow();

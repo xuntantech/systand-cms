@@ -17,7 +17,7 @@ import com.systand.cms.persistence.mybatis.page.mapper.PageLocaleMapper;
 import com.systand.cms.persistence.mybatis.page.section.dataobject.PageSectionDO;
 import com.systand.cms.persistence.mybatis.page.section.mapper.PageSectionLocaleMapper;
 import com.systand.cms.persistence.mybatis.page.section.mapper.PageSectionMapper;
-import com.systand.cms.application.page.section.service.PageSectionTypeDefinition;
+import com.systand.cms.core.section.PageSectionTypeDefinition;
 import com.systand.cms.application.page.section.service.PageSectionTypeService;
 import com.systand.cms.application.page.vo.PageVO;
 import com.systand.cms.persistence.mybatis.site.mapper.SiteMapper;

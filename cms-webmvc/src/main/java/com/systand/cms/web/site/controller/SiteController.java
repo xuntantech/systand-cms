@@ -1,10 +1,12 @@
 package com.systand.cms.web.site.controller;
 
-import com.systand.cms.persistence.mybatis.site.dataobject.SiteDO;
-import com.systand.cms.application.site.service.SiteService;
-import com.systand.cms.application.site.service.CreateSiteRequest;
+import com.systand.cms.api.site.CmsSiteVO;
+import com.systand.cms.api.site.CmsSiteOperations;
+import com.systand.cms.api.site.CmsCreateSiteCommand;
+import com.systand.cms.web.site.dto.CreateSiteRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,17 +18,21 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "systand.cms.web", name = "site-enabled",
+        havingValue = "true", matchIfMissing = true)
 public class SiteController {
-	private final SiteService siteService;
+	private final CmsSiteOperations siteService;
 
 	@GetMapping("${systand.cms.api-prefix:/v1/cms}" + "/sites")
-	public List<SiteDO> getSitesByTenant() {
-		List<SiteDO> sites = siteService.getSitesByTenant();
+	public List<CmsSiteVO> getSitesByTenant() {
+		List<CmsSiteVO> sites = siteService.getSitesByTenant();
 		return sites;
 	}
 
 	@PostMapping("${systand.cms.api-prefix:/v1/cms}" + "/sites")
-	public ResponseEntity<SiteDO> createSite(@Valid @RequestBody CreateSiteRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(siteService.createSite(request));
+	public ResponseEntity<CmsSiteVO> createSite(@Valid @RequestBody CreateSiteRequest request) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(siteService.createSite(
+				new CmsCreateSiteCommand(request.code(), request.name(),
+						request.defaultLocale(), request.enabledLocales())));
 	}
 }
