@@ -1,9 +1,10 @@
 package com.systand.cms.web.page.controller;
 
-import com.systand.cms.application.page.dto.CreatePageLocaleRequest;
-import com.systand.cms.application.page.dto.UpdatePageLocaleRequest;
-import com.systand.cms.application.page.service.PageLocaleService;
-import com.systand.cms.application.page.vo.PageLocaleVO;
+import com.systand.cms.api.page.CmsPageLocaleService;
+import com.systand.cms.api.page.PageLocaleVO;
+import com.systand.cms.web.page.converter.CmsPageWebConverter;
+import com.systand.cms.web.page.request.CreatePageLocaleRequest;
+import com.systand.cms.web.page.request.UpdatePageLocaleRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("${systand.cms.api-prefix:/v1/cms}" + "/sites/{siteId}/pages/{pageId}/locales")
 public class PageLocaleController {
-	private final PageLocaleService pageLocaleService;
+	private final CmsPageLocaleService pageLocaleService;
+	private final CmsPageWebConverter converter;
 
 	@GetMapping
 	public List<PageLocaleVO> getPageLocales(@PathVariable UUID siteId, @PathVariable UUID pageId) {
@@ -49,7 +51,7 @@ public class PageLocaleController {
 			@PathVariable UUID pageId,
 			@Valid @RequestBody CreatePageLocaleRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(pageLocaleService.createPageLocale(siteId, pageId, request));
+				.body(pageLocaleService.createPageLocale(siteId, pageId, converter.toCommand(request)));
 	}
 
 	@PutMapping("/{localeId}")
@@ -58,7 +60,7 @@ public class PageLocaleController {
 			@PathVariable UUID pageId,
 			@PathVariable UUID localeId,
 			@Valid @RequestBody UpdatePageLocaleRequest request) {
-		return pageLocaleService.updatePageLocale(siteId, pageId, localeId, request);
+		return pageLocaleService.updatePageLocale(siteId, pageId, localeId, converter.toCommand(request));
 	}
 
 	@DeleteMapping("/{localeId}")

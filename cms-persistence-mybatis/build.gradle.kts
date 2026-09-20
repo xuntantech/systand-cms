@@ -6,14 +6,21 @@ plugins {
 dependencies {
     api(project(":cms-api"))
     api(project(":cms-core"))
-    api("com.baomidou:mybatis-plus-core:3.5.17")
-    implementation("tools.jackson.core:jackson-databind:3.1.4")
-    compileOnly("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.projectlombok:lombok:1.18.38")
+    implementation(project(":cms-application"))
+    api(libs.mybatis.plus.core)
+    implementation(libs.jackson.databind)
+    implementation(libs.spring.context)
+    compileOnly(libs.lombok)
+    compileOnly(libs.mapstruct)
+    annotationProcessor(libs.lombok)
+    annotationProcessor(libs.mapstruct.processor)
+    annotationProcessor(libs.lombok.mapstruct.binding)
 
-    testImplementation(platform("org.junit:junit-bom:5.12.2"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mapstruct)
+    testImplementation(libs.spring.boot.starter.test)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 publishing {

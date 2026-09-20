@@ -1,7 +1,7 @@
 package com.systand.cms.web.page.section.controller;
 
-import com.systand.cms.application.page.section.service.PageSectionTypeService;
-import com.systand.cms.application.page.section.vo.PageSectionTypeVO;
+import com.systand.cms.api.page.CmsPageSectionTypeService;
+import com.systand.cms.api.page.PageSectionTypeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("${systand.cms.api-prefix:/v1/cms}" + "/section-types")
 public class PageSectionTypeController {
-	private final PageSectionTypeService pageSectionTypeService;
+	private final CmsPageSectionTypeService pageSectionTypeService;
 
 	@GetMapping
 	public List<PageSectionTypeVO> getSectionTypes() {

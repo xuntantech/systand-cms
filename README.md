@@ -9,11 +9,11 @@ no dependency on `systand-platform` modules.
 
 | Artifact | Contents |
 | --- | --- |
-| `cms-api` | Tenant, actor, media and translation ports; stable error/page contracts |
+| `cms-api` | Stable Service, Command, VO, tenant, actor and media contracts |
 | `cms-core` | Domain rules and exceptions |
-| `cms-persistence-mybatis` | CMS-owned DOs, mappers and JSON/UUID handlers |
-| `cms-application` | Site/Page/Section services, requests and responses |
-| `cms-webmvc` | Configurable management HTTP endpoints and error advice |
+| `cms-application` | Repository ports and replaceable default Site/Page/Section services |
+| `cms-persistence-mybatis` | Repository adapters, CMS-owned DOs, mappers and type handlers |
+| `cms-webmvc` | HTTP Request types, Request-to-Command converters, endpoints and error advice |
 | `cms-spring-boot-starter` | Auto-configuration; pulls in the modules above |
 | `cms-bom` | Version alignment for applications using multiple CMS artifacts |
 
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.systand.cms:cms-spring-boot-starter:0.3.1")
+    implementation("com.systand.cms:cms-spring-boot-starter:0.3.2")
 }
 ```
 
@@ -52,11 +52,11 @@ starter dependency exposes the API, services, persistence and controllers
 transitively. The BOM is optional when using one explicitly versioned starter;
 use it when declaring several CMS artifacts directly.
 
-`0.3.1` currently builds from this checkout; it is **not** available
-from GitHub Packages until the release workflow publishes it. The platform
-checkout uses a conditional Gradle composite build to consume the sibling CMS
-source locally. Other hosts should wait for a published coordinate or use a
-source composite build of their own.
+`0.3.2` currently builds from this checkout; it is **not** available
+from GitHub Packages until the release workflow publishes it. Before release,
+the platform can verify the sibling source explicitly with Gradle
+`--include-build ../systand-app-modules/systand-cms`. Other hosts should wait
+for a published coordinate or use an explicit source composite build.
 
 ## Host ports and configuration
 
@@ -92,10 +92,19 @@ CmsTenantProvider cmsTenantProvider(TrustedTenantContext context) {
 ```
 
 Do not use a client-supplied `tenant_id`. Services scope Site/Page/Section
-operations to the provider's tenant. The host remains responsible for the
-HTTP authentication/authorization policy and for any MyBatis tenant plugin it
-chooses to install. `web-enabled: false` keeps CMS services and mappers active
-but does not expose CMS controllers. `enabled: false` disables the starter.
+operations to the provider's tenant. Every normal MyBatis repository operation
+also includes an explicit `tenant_id` predicate, so CMS isolation does not
+depend on a host MyBatis tenant plugin. The host remains responsible for HTTP
+authentication and authorization. `CmsSiteAdministrationService` is a
+cross-tenant Java API without a shared HTTP controller; only trusted host
+administration use cases may call it after authorization. Its create command
+accepts an explicit target tenant, while the audit actor still comes from the
+trusted `CmsActorProvider` rather than the request body.
+
+`web-enabled: false` keeps CMS services and persistence active but does not
+expose CMS controllers. `enabled: false` disables the starter. A host can
+replace any public CMS Service by declaring its own bean; the corresponding
+`Default*Service` is registered only when that Service type is missing.
 
 The shared management API includes `/sites`, `/sites/{siteId}/pages`, page
 locales, sections and section locales beneath `api-prefix`. `POST /sites`
@@ -111,6 +120,6 @@ available. CMS errors use `CMS_*` codes and a CMS-owned response envelope.
 ```
 
 The GitHub Actions publish workflow runs on a version-matching tag or manual
-dispatch. Run the checks, then tag the same version (`v0.3.1`).
+dispatch. For a release, run the checks, commit, and tag the same version (`v0.3.2`).
 Do not push a tag before checking the database prerequisite for the target
 deployment. No package is published merely by editing this repository.

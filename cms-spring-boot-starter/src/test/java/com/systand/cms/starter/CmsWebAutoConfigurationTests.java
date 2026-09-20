@@ -1,11 +1,11 @@
 package com.systand.cms.starter;
 
-import com.systand.cms.application.page.section.service.PageSectionLocaleService;
-import com.systand.cms.application.page.section.service.PageSectionService;
-import com.systand.cms.application.page.section.service.PageSectionTypeService;
-import com.systand.cms.application.page.service.PageLocaleService;
-import com.systand.cms.application.page.service.PageService;
-import com.systand.cms.api.site.CmsSiteOperations;
+import com.systand.cms.api.page.CmsPageLocaleService;
+import com.systand.cms.api.page.CmsPageSectionLocaleService;
+import com.systand.cms.api.page.CmsPageSectionService;
+import com.systand.cms.api.page.CmsPageSectionTypeService;
+import com.systand.cms.api.page.CmsPageService;
+import com.systand.cms.api.site.CmsSiteService;
 import com.systand.cms.web.page.controller.PageController;
 import com.systand.cms.web.site.controller.SiteController;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,12 @@ import static org.mockito.Mockito.mock;
 class CmsWebAutoConfigurationTests {
     private final ApplicationContextRunner runner = new ApplicationContextRunner()
             .withUserConfiguration(CmsWebAutoConfiguration.class)
-            .withBean(CmsSiteOperations.class, () -> mock(CmsSiteOperations.class))
-            .withBean(PageService.class, () -> mock(PageService.class))
-            .withBean(PageLocaleService.class, () -> mock(PageLocaleService.class))
-            .withBean(PageSectionService.class, () -> mock(PageSectionService.class))
-            .withBean(PageSectionLocaleService.class, () -> mock(PageSectionLocaleService.class))
-            .withBean(PageSectionTypeService.class, () -> mock(PageSectionTypeService.class));
+            .withBean(CmsSiteService.class, () -> mock(CmsSiteService.class))
+            .withBean(CmsPageService.class, () -> mock(CmsPageService.class))
+            .withBean(CmsPageLocaleService.class, () -> mock(CmsPageLocaleService.class))
+            .withBean(CmsPageSectionService.class, () -> mock(CmsPageSectionService.class))
+            .withBean(CmsPageSectionLocaleService.class, () -> mock(CmsPageSectionLocaleService.class))
+            .withBean(CmsPageSectionTypeService.class, () -> mock(CmsPageSectionTypeService.class));
 
     @Test
     void discoversSharedControllersByDefault() {

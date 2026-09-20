@@ -5,18 +5,17 @@ plugins {
 
 dependencies {
     api(project(":cms-core"))
-    api(project(":cms-persistence-mybatis"))
-    implementation("org.springframework.boot:spring-boot-starter:4.1.0")
-    implementation("org.springframework.boot:spring-boot-starter-validation:4.1.0")
-    implementation("org.springframework:spring-jdbc:7.0.5")
-    api("org.mapstruct:mapstruct:1.6.3")
+    implementation(libs.spring.boot.starter)
+    implementation(libs.spring.jdbc)
+    compileOnly(libs.mapstruct)
 
-    compileOnly("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
-    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:4.1.0")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.1")
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+    annotationProcessor(libs.mapstruct.processor)
+    annotationProcessor(libs.lombok.mapstruct.binding)
+    testImplementation(libs.mapstruct)
+    testImplementation(libs.spring.boot.starter.test)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 publishing {

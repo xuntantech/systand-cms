@@ -1,9 +1,10 @@
 package com.systand.cms.web.page.section.controller;
 
-import com.systand.cms.application.page.section.dto.CreatePageSectionLocaleRequest;
-import com.systand.cms.application.page.section.dto.UpdatePageSectionLocaleRequest;
-import com.systand.cms.application.page.section.service.PageSectionLocaleService;
-import com.systand.cms.application.page.section.vo.PageSectionLocaleVO;
+import com.systand.cms.api.page.CmsPageSectionLocaleService;
+import com.systand.cms.api.page.PageSectionLocaleVO;
+import com.systand.cms.web.page.converter.CmsPageWebConverter;
+import com.systand.cms.web.page.section.request.CreatePageSectionLocaleRequest;
+import com.systand.cms.web.page.section.request.UpdatePageSectionLocaleRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ import java.util.UUID;
 @RequestMapping("${systand.cms.api-prefix:/v1/cms}"
 		+ "/sites/{siteId}/pages/{pageId}/sections/{sectionId}/locales")
 public class PageSectionLocaleController {
-	private final PageSectionLocaleService pageSectionLocaleService;
+	private final CmsPageSectionLocaleService pageSectionLocaleService;
+	private final CmsPageWebConverter converter;
 
 	@GetMapping
 	public List<PageSectionLocaleVO> getSectionLocales(
@@ -55,7 +57,8 @@ public class PageSectionLocaleController {
 			@PathVariable UUID sectionId,
 			@Valid @RequestBody CreatePageSectionLocaleRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(
-				pageSectionLocaleService.createSectionLocale(siteId, pageId, sectionId, request));
+				pageSectionLocaleService.createSectionLocale(
+						siteId, pageId, sectionId, converter.toCommand(request)));
 	}
 
 	@PutMapping("/{localeId}")
@@ -66,7 +69,7 @@ public class PageSectionLocaleController {
 			@PathVariable UUID localeId,
 			@Valid @RequestBody UpdatePageSectionLocaleRequest request) {
 		return pageSectionLocaleService.updateSectionLocale(
-				siteId, pageId, sectionId, localeId, request);
+				siteId, pageId, sectionId, localeId, converter.toCommand(request));
 	}
 
 	@DeleteMapping("/{localeId}")

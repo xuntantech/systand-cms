@@ -1,13 +1,14 @@
 package com.systand.cms.web.page.controller;
 
-import com.systand.cms.application.page.dto.CreatePageRequest;
-import com.systand.cms.application.page.dto.PublishPageRequest;
-import com.systand.cms.application.page.dto.SchedulePageRequest;
-import com.systand.cms.application.page.dto.UpdatePageRequest;
+import com.systand.cms.api.page.CmsPageService;
 import com.systand.cms.api.page.PageKind;
 import com.systand.cms.api.page.PagePublicationStatus;
-import com.systand.cms.application.page.service.PageService;
-import com.systand.cms.application.page.vo.PageVO;
+import com.systand.cms.api.page.PageVO;
+import com.systand.cms.web.page.converter.CmsPageWebConverter;
+import com.systand.cms.web.page.request.CreatePageRequest;
+import com.systand.cms.web.page.request.PublishPageRequest;
+import com.systand.cms.web.page.request.SchedulePageRequest;
+import com.systand.cms.web.page.request.UpdatePageRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("${systand.cms.api-prefix:/v1/cms}" + "/sites/{siteId}/pages")
 public class PageController {
-	private final PageService pageService;
+	private final CmsPageService pageService;
+	private final CmsPageWebConverter converter;
 
 	@GetMapping
 	public List<PageVO> getPages(
@@ -53,7 +55,8 @@ public class PageController {
 	public ResponseEntity<PageVO> createPage(
 			@PathVariable UUID siteId,
 			@Valid @RequestBody CreatePageRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(pageService.createPage(siteId, request));
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(pageService.createPage(siteId, converter.toCommand(request)));
 	}
 
 	@PutMapping("/{pageId}")
@@ -61,7 +64,7 @@ public class PageController {
 			@PathVariable UUID siteId,
 			@PathVariable UUID pageId,
 			@Valid @RequestBody UpdatePageRequest request) {
-		return pageService.updatePage(siteId, pageId, request);
+		return pageService.updatePage(siteId, pageId, converter.toCommand(request));
 	}
 
 	@DeleteMapping("/{pageId}")
@@ -94,7 +97,7 @@ public class PageController {
 			@PathVariable UUID siteId,
 			@PathVariable UUID pageId,
 			@Valid @RequestBody SchedulePageRequest request) {
-		return pageService.schedulePage(siteId, pageId, request);
+		return pageService.schedulePage(siteId, pageId, converter.toCommand(request));
 	}
 
 	@PatchMapping("/{pageId}/cancel-schedule")
@@ -110,7 +113,7 @@ public class PageController {
 			@PathVariable UUID siteId,
 			@PathVariable UUID pageId,
 			@Valid @RequestBody PublishPageRequest request) {
-		return pageService.publishPage(siteId, pageId, request);
+		return pageService.publishPage(siteId, pageId, converter.toCommand(request));
 	}
 
 	@PatchMapping("/{pageId}/unpublish")

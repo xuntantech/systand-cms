@@ -1,9 +1,10 @@
 package com.systand.cms.web.page.section.controller;
 
-import com.systand.cms.application.page.section.dto.CreatePageSectionRequest;
-import com.systand.cms.application.page.section.dto.UpdatePageSectionRequest;
-import com.systand.cms.application.page.section.service.PageSectionService;
-import com.systand.cms.application.page.section.vo.PageSectionVO;
+import com.systand.cms.api.page.CmsPageSectionService;
+import com.systand.cms.api.page.PageSectionVO;
+import com.systand.cms.web.page.converter.CmsPageWebConverter;
+import com.systand.cms.web.page.section.request.CreatePageSectionRequest;
+import com.systand.cms.web.page.section.request.UpdatePageSectionRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -29,7 +30,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("${systand.cms.api-prefix:/v1/cms}" + "/sites/{siteId}/pages/{pageId}/sections")
 public class PageSectionController {
-	private final PageSectionService pageSectionService;
+	private final CmsPageSectionService pageSectionService;
+	private final CmsPageWebConverter converter;
 
 	@GetMapping
 	public List<PageSectionVO> getSections(
@@ -55,7 +57,7 @@ public class PageSectionController {
 			@PathVariable UUID pageId,
 			@Valid @RequestBody CreatePageSectionRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(pageSectionService.createSection(siteId, pageId, request));
+				.body(pageSectionService.createSection(siteId, pageId, converter.toCommand(request)));
 	}
 
 	@PutMapping("/{sectionId}")
@@ -64,7 +66,7 @@ public class PageSectionController {
 			@PathVariable UUID pageId,
 			@PathVariable UUID sectionId,
 			@Valid @RequestBody UpdatePageSectionRequest request) {
-		return pageSectionService.updateSection(siteId, pageId, sectionId, request);
+		return pageSectionService.updateSection(siteId, pageId, sectionId, converter.toCommand(request));
 	}
 
 	@DeleteMapping("/{sectionId}")

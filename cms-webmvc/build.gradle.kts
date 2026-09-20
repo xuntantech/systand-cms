@@ -4,13 +4,17 @@ plugins {
 }
 
 dependencies {
-    api(project(":cms-application"))
-    implementation("org.springframework.boot:spring-boot-starter-web:4.1.0")
-    implementation("org.springframework.boot:spring-boot-starter-validation:4.1.0")
-    compileOnly("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.projectlombok:lombok:1.18.38")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:4.1.0")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.1")
+    api(project(":cms-api"))
+    implementation(project(":cms-core"))
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.validation)
+    compileOnly(libs.lombok)
+    compileOnly(libs.mapstruct)
+    annotationProcessor(libs.lombok)
+    annotationProcessor(libs.mapstruct.processor)
+    annotationProcessor(libs.lombok.mapstruct.binding)
+    testImplementation(libs.spring.boot.starter.test)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 publishing {

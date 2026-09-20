@@ -1,0 +1,29 @@
+[versions]
+spring-boot = "4.1.1"
+spring-framework = "7.0.5"
+mybatis-plus = "3.5.17"
+mapstruct = "1.6.3"
+lombok = "1.18.38"
+lombok-mapstruct-binding = "0.2.0"
+jackson = "3.1.4"
+junit = "5.12.2"
+junit-platform = "1.12.1"
+
+[libraries]
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-framework" }
+spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-framework" }
+mybatis-plus-core = { module = "com.baomidou:mybatis-plus-core", version.ref = "mybatis-plus" }
+mybatis-plus-spring-boot4-starter = { module = "com.baomidou:mybatis-plus-spring-boot4-starter", version.ref = "mybatis-plus" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+lombok-mapstruct-binding = { module = "org.projectlombok:lombok-mapstruct-binding", version.ref = "lombok-mapstruct-binding" }
+jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
